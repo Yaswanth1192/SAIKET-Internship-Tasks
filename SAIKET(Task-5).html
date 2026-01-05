@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Contact Book</title>
+</head>
+<body>
+
+<h2>Contact Book</h2>
+
+<!-- Add Contact -->
+<input type="text" id="name" placeholder="Enter Name">
+<input type="text" id="phone" placeholder="Enter Phone">
+<input type="email" id="email" placeholder="Enter Email">
+<button onclick="addContact()">Add Contact</button>
+
+<br><br>
+
+<!-- Search -->
+<input type="text" id="search" placeholder="Search by name" onkeyup="searchContact()">
+
+<h3>Contact List</h3>
+<ul id="contactList"></ul>
+
+<script>
+    let contacts = [];
+
+    function addContact() {
+        let name = document.getElementById("name").value;
+        let phone = document.getElementById("phone").value;
+        let email = document.getElementById("email").value;
+
+        if (name === "" || phone === "" || email === "") {
+            alert("Please fill all fields");
+            return;
+        }
+
+        let contact = {
+            name: name,
+            phone: phone,
+            email: email
+        };
+
+        contacts.push(contact);
+        clearInputs();
+        showContacts(contacts);
+    }
+
+    function showContacts(list) {
+        let ul = document.getElementById("contactList");
+        ul.innerHTML = "";
+
+        for (let i = 0; i < list.length; i++) {
+            let li = document.createElement("li");
+            li.innerHTML =
+                list[i].name + " | " +
+                list[i].phone + " | " +
+                list[i].email +
+                " <button onclick='deleteContact(" + i + ")'>Delete</button>";
+            ul.appendChild(li);
+        }
+    }
+
+    function deleteContact(index) {
+        contacts.splice(index, 1);
+        showContacts(contacts);
+    }
+
+    function searchContact() {
+        let searchText = document.getElementById("search").value.toLowerCase();
+        let filtered = [];
+
+        for (let i = 0; i < contacts.length; i++) {
+            if (contacts[i].name.toLowerCase().includes(searchText)) {
+                filtered.push(contacts[i]);
+            }
+        }
+        showContacts(filtered);
+    }
+
+    function clearInputs() {
+        document.getElementById("name").value = "";
+        document.getElementById("phone").value = "";
+        document.getElementById("email").value = "";
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Blog App</title>
+</head>
+<body>
+
+<h2>My Blog</h2>
+
+<input type="text" id="post" placeholder="Write your post here">
+<button onclick="addPost()">Add Post</button>
+
+<ul id="postList"></ul>
+
+<script>
+    let posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+    function addPost() {
+        let postText = document.getElementById("post").value;
+
+        if (postText === "") {
+            alert("Please write something");
+            return;
+        }
+
+        posts.push(postText);
+        localStorage.setItem("posts", JSON.stringify(posts));
+        document.getElementById("post").value = "";
+        showPosts();
+    }
+
+    function showPosts() {
+        let list = document.getElementById("postList");
+        list.innerHTML = "";
+
+        for (let i = 0; i < posts.length; i++) {
+            let li = document.createElement("li");
+            li.innerHTML = posts[i] + 
+            " <button onclick='deletePost(" + i + ")'>Delete</button>";
+            list.appendChild(li);
+        }
+    }
+
+    function deletePost(index) {
+        posts.splice(index, 1);
+        localStorage.setItem("posts", JSON.stringify(posts));
+        showPosts();
+    }
+
+    showPosts();
+</script>
+
+</body>
+</html>
